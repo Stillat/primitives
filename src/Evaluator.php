@@ -48,8 +48,7 @@ class Evaluator
         $nodeToCheck = $propertyFetch;
         $parts = [];
 
-        while ($nodeToCheck instanceof PropertyFetch)
-        {
+        while ($nodeToCheck instanceof PropertyFetch) {
             $parts[] = $nodeToCheck->name->name;
 
             $nodeToCheck = $nodeToCheck->var;

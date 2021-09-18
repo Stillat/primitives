@@ -4,7 +4,6 @@ namespace Stillat\Primitives;
 
 class MethodCall
 {
-
     /**
      * The method name.
      *
@@ -18,5 +17,4 @@ class MethodCall
      * @var array
      */
     public $args = [];
-
 }

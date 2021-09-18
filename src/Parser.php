@@ -8,7 +8,6 @@ use Stillat\Primitives\Utilities\StringUtilities;
 
 class Parser
 {
-
     /**
      * @var Php7
      */
@@ -33,8 +32,8 @@ class Parser
 
     /**
      * Parses the input string to produce an array of PHP runtime values.
-     * 
-     * @param string $string The string.
+     *
+     * @param  string  $string  The string.
      * @return array
      */
     public function parseString($string)
@@ -55,14 +54,14 @@ class Parser
     /**
      * Converts the input string into an array containing a method and values.
      *
-     * @param string $string The input.
+     * @param  string  $string  The input.
      * @return array|null
      */
     public function parseMethod($string)
     {
         $string = trim($string);
 
-        if (!StringUtilities::endsWith($string, ')')) {
+        if (! StringUtilities::endsWith($string, ')')) {
             return $this->parseString($string);
         }
 
@@ -73,11 +72,10 @@ class Parser
             $args = $this->parseString(mb_substr($parts[1], 0, -1));
 
             return [
-                $method, $args
+                $method, $args,
             ];
         }
 
         return null;
     }
-
 }

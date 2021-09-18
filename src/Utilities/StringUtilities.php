@@ -4,7 +4,6 @@ namespace Stillat\Primitives\Utilities;
 
 class StringUtilities
 {
-
     /**
      * Determine if a given string ends with a given substring.
      *
@@ -26,5 +25,4 @@ class StringUtilities
 
         return false;
     }
-
 }

@@ -5,13 +5,12 @@ use Stillat\Primitives\Parser;
 
 class ParserTest extends TestCase
 {
-
     protected $parser;
 
     protected $strings = [
         'test',
         'with spaces',
-        'with \'\\ \ escape'
+        'with \'\\ \ escape',
     ];
 
     protected $numbers = [
@@ -19,7 +18,7 @@ class ParserTest extends TestCase
         0,
         32.32,
         0b11111111,
-        0123
+        0123,
     ];
 
     public function setUp(): void
@@ -46,7 +45,7 @@ class ParserTest extends TestCase
     {
         $input = '[1, 2, 3, 4, "five"]';
         $this->assertSame([
-            1, 2, 3, 4, "five"
+            1, 2, 3, 4, 'five',
         ], $this->parser->parseString($input)[0]);
     }
 
@@ -54,9 +53,9 @@ class ParserTest extends TestCase
     {
         $input = '[1 => "one", 2 => "two", "three" => 3]';
         $this->assertSame([
-            1 => "one",
-            2 => "two",
-            "three" => 3
+            1 => 'one',
+            2 => 'two',
+            'three' => 3,
         ], $this->parser->parseString($input)[0]);
     }
 
@@ -70,8 +69,8 @@ class ParserTest extends TestCase
     {
         $input = '[[[[["one" => [1,2,3,4]]]]]]';
 
-        $this->assertSame([[[[["one" => [
-            1,2,3,4
+        $this->assertSame([[[[['one' => [
+            1, 2, 3, 4,
         ]]]]]], $this->parser->parseString($input)[0]);
     }
 
@@ -95,9 +94,8 @@ class ParserTest extends TestCase
             'randomElement',
             [
                 ['foo', 'bar'],
-                3
-            ]
+                3,
+            ],
         ], $this->parser->parseMethod('randomElement(["foo", "bar"], 3)'));
     }
-
 }

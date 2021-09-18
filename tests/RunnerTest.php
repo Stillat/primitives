@@ -1,12 +1,11 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Stillat\Primitives\Parser;
 use Stillat\Primitives\MethodRunner;
+use Stillat\Primitives\Parser;
 
 class RunnerTest extends TestCase
 {
-
     protected $parser = null;
     protected $methodRunner = null;
 
@@ -28,14 +27,13 @@ class RunnerTest extends TestCase
 
         $this->assertSame('Input: abcde : rand: min 1 max: 5', $runResults);
     }
-
 }
 
 class TestTarget
 {
     public function rand($min, $max)
     {
-        return 'rand: min '.$min. ' max: '.$max;
+        return 'rand: min '.$min.' max: '.$max;
     }
 
     public function randomElements($array, $limit)

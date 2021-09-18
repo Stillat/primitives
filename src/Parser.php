@@ -33,7 +33,7 @@ class Parser
     /**
      * Parses the string, and returns a list of PHP nodes.
      *
-     * @param string $string The string to parse.
+     * @param  string  $string  The string to parse.
      * @return array
      */
     private function getStatements($string)
@@ -76,7 +76,7 @@ class Parser
         $string = trim($string);
 
         if (! Str::endsWith($string, ')')) {
-            return $this->parseString($string);
+            return $this->parseString($string, $context);
         }
 
         $parts = explode('(', $string, 2);
@@ -116,5 +116,4 @@ class Parser
 
         return $values;
     }
-
 }

@@ -1,0 +1,23 @@
+{
+  "name": "stillat/primitives",
+  "description": "Parses strings of primitive values into a PHP array.",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "John Koster",
+      "email": "john@stillat.com"
+    }
+  ],
+  "require": {
+    "nikic/php-parser": "^4.10.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5 || ^9.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Stillat\\Primitives\\": "src"
+    }
+  }
+}

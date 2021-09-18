@@ -154,7 +154,7 @@ Important notes when using `MethodRunner`:
 
 ## Context Variables
 
-You also supply an array of contextual data that can be used when evaluating the input string. Context variables
+You may also supply an array of contextual data that can be used when evaluating the input string. Context variables
 utilize the `$` syntax. The variable name in the input string will be replaced with their actual values once evaluated:
 
 ```php

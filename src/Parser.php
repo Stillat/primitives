@@ -47,7 +47,7 @@ class Parser
      * Parses the input string to produce an array of PHP runtime values.
      *
      * @param  string  $string  The string.
-     * @param array $context An optional data context.
+     * @param  array  $context  An optional data context.
      * @return array
      */
     public function parseString($string, $context = [])
@@ -68,7 +68,7 @@ class Parser
      * Converts the input string into an array containing a method and values.
      *
      * @param  string  $string  The input.
-     * @param array $context An optional data context.
+     * @param  array  $context  An optional data context.
      * @return array|null
      */
     public function parseMethod($string, $context = [])
@@ -99,8 +99,8 @@ class Parser
      * This method differs from parseMethod() in that it will parse
      * nested method calls, and make instances of MethodCall.
      *
-     * @param string $string The input.
-     * @param array $context An optional data context.
+     * @param  string  $string  The input.
+     * @param  array  $context  An optional data context.
      * @return array
      */
     public function parseMethods($string, $context = [])

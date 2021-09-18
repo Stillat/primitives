@@ -33,7 +33,7 @@ class Parser
     /**
      * Parses the string, and returns a list of PHP nodes.
      *
-     * @param string $string The string to parse.
+     * @param  string  $string  The string to parse.
      * @return array
      */
     private function getStatements($string)
@@ -97,7 +97,7 @@ class Parser
      * This method differs from parseMethod() in that it will parse
      * nested method calls, and make instances of MethodCall.
      *
-     * @param string $string The input.
+     * @param  string  $string  The input.
      * @return array
      */
     public function parseMethods($string)
@@ -113,5 +113,4 @@ class Parser
 
         return $values;
     }
-
 }

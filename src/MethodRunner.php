@@ -4,21 +4,20 @@ namespace Stillat\Primitives;
 
 class MethodRunner
 {
-
     /**
      * Invokes nested methods on the provided object target.
      *
-     * @param array $runtimeArgs The runtime arguments.
-     * @param object $target The object to invoke methods on.
+     * @param  array  $runtimeArgs  The runtime arguments.
+     * @param  object  $target  The object to invoke methods on.
      * @return false|mixed|null
      */
     public function run($runtimeArgs, $target)
     {
-        if (empty ($runtimeArgs) || !is_object($target)) {
+        if (empty($runtimeArgs) || ! is_object($target)) {
             return null;
         }
 
-        if (count($runtimeArgs) > 1 || !$runtimeArgs[0] instanceof MethodCall) {
+        if (count($runtimeArgs) > 1 || ! $runtimeArgs[0] instanceof MethodCall) {
             return null;
         }
 
@@ -28,8 +27,8 @@ class MethodRunner
     /**
      * Invokes the provided method on the target object instance.
      *
-     * @param MethodCall $methodCall The method to invoke.
-     * @param object $target The object to invoke the method on.
+     * @param  MethodCall  $methodCall  The method to invoke.
+     * @param  object  $target  The object to invoke the method on.
      * @return false|mixed
      */
     protected function getTargetResult(MethodCall $methodCall, $target)
@@ -46,5 +45,4 @@ class MethodRunner
 
         return call_user_func([$target, $methodCall->name], ...$runtimeArgs);
     }
-
 }

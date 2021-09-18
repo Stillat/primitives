@@ -140,10 +140,10 @@ class ParserTest extends TestCase
                 'arrays' => [
                     'test' => [
                         'name' => 'Dave',
-                        'city' => 'Anywhere'
-                    ]
-                ]
-            ]
+                        'city' => 'Anywhere',
+                    ],
+                ],
+            ],
         ];
 
         $input = '[$nested->arrays->test->name, $nested->arrays->test->city]';

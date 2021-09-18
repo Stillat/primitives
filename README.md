@@ -152,6 +152,78 @@ Important notes when using `MethodRunner`:
 * If there is more than one root element, the `run` method returns `null`
 * `MethodRunner` does not check for method existence, allowing `__call` to be invoked
 
+## Context Variables
+
+You also supply an array of contextual data that can be used when evaluating the input string. Context variables
+utilize the `$` syntax. The variable name in the input string will be replaced with their actual values once evaluated:
+
+```php
+<?php
+
+use Stillat\Primitives\Parser;
+
+$parser = new Parser();
+
+$context = [
+    'name' => 'Dave',
+    'city' => 'City'
+];
+
+$result = $parser->parseString('[$name, $city]', $context);
+```
+
+Once the previous example has executed, `$result` would contain a value similar to:
+
+```
+array(1) {
+  [0] =>
+  array(2) {
+    [0] =>
+    string(4) "Dave"
+    [1] =>
+    string(4) "City"
+  }
+}
+```
+
+Nested variable paths can be utilized by using PHP's property fetcher syntax (array accessor syntax is not supported):
+
+```php
+<?php
+
+use Stillat\Primitives\Parser;
+
+$parser = new Parser();
+
+$context = [
+    'nested' => [
+        'arrays' => [
+            'test' => [
+                'name' => 'Dave',
+                'city' => 'Anywhere'
+            ]
+        ]
+    ]
+];
+
+$result = $parser->parseString('[$nested->arrays->test->name,' .
+    '$nested->arrays->test->city]', $context);
+```
+
+Like before, the `$result` variable would contain a value similar to the following:
+
+```
+array(1) {
+  [0] =>
+  array(2) {
+    [0] =>
+    string(4) "Dave"
+    [1] =>
+    string(4) "City"
+  }
+}
+```
+
 ## License
 
 MIT License. See LICENSE.MD

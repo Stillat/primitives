@@ -47,9 +47,10 @@ class Parser
      * Parses the input string to produce an array of PHP runtime values.
      *
      * @param  string  $string  The string.
+     * @param array $context An optional data context.
      * @return array
      */
-    public function parseString($string)
+    public function parseString($string, $context = [])
     {
         $statements = $this->getStatements($string);
 
@@ -57,7 +58,7 @@ class Parser
         $evaluator = new Evaluator();
 
         foreach ($statements as $statement) {
-            $values[] = $evaluator->evaluate($statement->value);
+            $values[] = $evaluator->evaluate($statement->value, $context);
         }
 
         return $values;
@@ -67,9 +68,10 @@ class Parser
      * Converts the input string into an array containing a method and values.
      *
      * @param  string  $string  The input.
+     * @param array $context An optional data context.
      * @return array|null
      */
-    public function parseMethod($string)
+    public function parseMethod($string, $context = [])
     {
         $string = trim($string);
 
@@ -98,9 +100,10 @@ class Parser
      * nested method calls, and make instances of MethodCall.
      *
      * @param string $string The input.
+     * @param array $context An optional data context.
      * @return array
      */
-    public function parseMethods($string)
+    public function parseMethods($string, $context = [])
     {
         $statements = $this->getStatements($string);
 
@@ -108,7 +111,7 @@ class Parser
         $evaluator = new Evaluator();
 
         foreach ($statements as $statement) {
-            $values[] = $evaluator->evaluate($statement->value);
+            $values[] = $evaluator->evaluate($statement->value, $context);
         }
 
         return $values;

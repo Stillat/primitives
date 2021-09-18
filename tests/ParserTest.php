@@ -123,4 +123,31 @@ class ParserTest extends TestCase
         $this->assertSame('rand', $secondCall->name);
         $this->assertSame([1, 5], $secondCall->args);
     }
+
+    public function test_it_pulls_simple_variables_from_context()
+    {
+        $context = ['name' => 'Dave', 'city' => 'Anywhere'];
+
+        $result = $this->parser->parseString('$name, $city', $context);
+
+        $this->assertSame(['Dave', 'Anywhere'], $result);
+    }
+
+    public function test_it_pulls_nested_variable_paths_from_context()
+    {
+        $context = [
+            'nested' => [
+                'arrays' => [
+                    'test' => [
+                        'name' => 'Dave',
+                        'city' => 'Anywhere'
+                    ]
+                ]
+            ]
+        ];
+
+        $input = '[$nested->arrays->test->name, $nested->arrays->test->city]';
+
+        $this->assertSame(['Dave', 'Anywhere'], $this->parser->parseString($input, $context)[0]);
+    }
 }

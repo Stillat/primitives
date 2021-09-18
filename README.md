@@ -166,7 +166,7 @@ $parser = new Parser();
 
 $context = [
     'name' => 'Dave',
-    'city' => 'City'
+    'city' => 'Anywhere'
 ];
 
 $result = $parser->parseString('[$name, $city]', $context);
@@ -181,7 +181,7 @@ array(1) {
     [0] =>
     string(4) "Dave"
     [1] =>
-    string(4) "City"
+    string(8) "Anywhere"
   }
 }
 ```
@@ -219,7 +219,7 @@ array(1) {
     [0] =>
     string(4) "Dave"
     [1] =>
-    string(4) "City"
+    string(8) "Anywhere"
   }
 }
 ```

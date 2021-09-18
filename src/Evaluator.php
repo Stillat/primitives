@@ -11,7 +11,6 @@ use PhpParser\Node\Scalar\String_;
 
 class Evaluator
 {
-
     public function evaluate($node)
     {
         if ($node instanceof LNumber) {
@@ -20,11 +19,11 @@ class Evaluator
             return floatval($node->value);
         } elseif ($node instanceof ConstFetch) {
             return $this->getConstantValue($node->name->parts[0]);
-        } else if ($node instanceof Array_) {
+        } elseif ($node instanceof Array_) {
             return $this->evaluateArray($node);
-        } else if ($node instanceof String_) {
+        } elseif ($node instanceof String_) {
             return $node->value;
-        } else if ($node instanceof UnaryMinus) {
+        } elseif ($node instanceof UnaryMinus) {
             return -1 * $this->evaluate($node->expr);
         }
 
@@ -37,9 +36,9 @@ class Evaluator
 
         if ($checkValue == 'null') {
             return null;
-        } else if ($checkValue == 'true') {
+        } elseif ($checkValue == 'true') {
             return true;
-        } else if ($checkValue == 'false') {
+        } elseif ($checkValue == 'false') {
             return false;
         }
 
@@ -65,5 +64,4 @@ class Evaluator
 
         return $arrayValues;
     }
-
 }

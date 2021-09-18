@@ -98,4 +98,29 @@ class ParserTest extends TestCase
             ],
         ], $this->parser->parseMethod('randomElement(["foo", "bar"], 3)'));
     }
+
+    public function test_it_parses_method_calls()
+    {
+        $input = "randomElements(['a', 'b', 'c', 'd', 'e'], rand(1, 5))";
+        $result = $this->parser->parseMethods($input);
+
+        $this->assertCount(1, $result);
+
+        $first = $result[0];
+
+        $this->assertInstanceOf(\Stillat\Primitives\MethodCall::class, $first);
+        $this->assertCount(2, $first->args);
+        $this->assertSame('randomElements', $first->name);
+
+        $firstArgs = $first->args;
+
+        $this->assertSame(['a', 'b', 'c', 'd', 'e'], $firstArgs[0]);
+        $this->assertInstanceOf(\Stillat\Primitives\MethodCall::class, $firstArgs[1]);
+
+        /** @var \Stillat\Primitives\MethodCall $secondCall */
+        $secondCall = $firstArgs[1];
+
+        $this->assertSame('rand', $secondCall->name);
+        $this->assertSame([1, 5], $secondCall->args);
+    }
 }

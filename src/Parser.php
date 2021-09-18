@@ -2,9 +2,9 @@
 
 namespace Stillat\Primitives;
 
+use Illuminate\Support\Str;
 use PhpParser\Lexer\Emulative;
 use PhpParser\Parser\Php7;
-use Stillat\Primitives\Utilities\StringUtilities;
 
 class Parser
 {
@@ -31,6 +31,19 @@ class Parser
     }
 
     /**
+     * Parses the string, and returns a list of PHP nodes.
+     *
+     * @param string $string The string to parse.
+     * @return array
+     */
+    private function getStatements($string)
+    {
+        $wrapCode = '<?php $primitives = ['.$string.'];';
+
+        return $this->parser->parse($wrapCode)[0]->expr->expr->items;
+    }
+
+    /**
      * Parses the input string to produce an array of PHP runtime values.
      *
      * @param  string  $string  The string.
@@ -38,8 +51,7 @@ class Parser
      */
     public function parseString($string)
     {
-        $wrapCode = '<?php $primitives = ['.$string.'];';
-        $statements = $this->parser->parse($wrapCode)[0]->expr->expr->items;
+        $statements = $this->getStatements($string);
 
         $values = [];
         $evaluator = new Evaluator();
@@ -61,7 +73,7 @@ class Parser
     {
         $string = trim($string);
 
-        if (! StringUtilities::endsWith($string, ')')) {
+        if (! Str::endsWith($string, ')')) {
             return $this->parseString($string);
         }
 
@@ -78,4 +90,28 @@ class Parser
 
         return null;
     }
+
+    /**
+     * Converts the input string into an array of method calls, and values.
+     *
+     * This method differs from parseMethod() in that it will parse
+     * nested method calls, and make instances of MethodCall.
+     *
+     * @param string $string The input.
+     * @return array
+     */
+    public function parseMethods($string)
+    {
+        $statements = $this->getStatements($string);
+
+        $values = [];
+        $evaluator = new Evaluator();
+
+        foreach ($statements as $statement) {
+            $values[] = $evaluator->evaluate($statement->value);
+        }
+
+        return $values;
+    }
+
 }

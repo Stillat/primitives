@@ -98,6 +98,60 @@ array(2) {
 
 Invalid input will produce a `null` value.
 
+## Parsing Nested Methods
+
+A more advanced alternative of `parseMethod` is the `parseMethods` method:
+
+```php
+use Stillat\Primitives\Parser;
+
+$parser = new Parser();
+
+$result = $parser->parseMethods("randomElements(['a', 'b', 'c', 'd', 'e'], rand(1, 5))"); 
+```
+
+Detected method calls will be returned as instances of `Stillat\Primitives\MethodCall`. Each instance of this class
+will contain the original method's name, as well as the parsed (and evaluated) runtime arguments. `parseMethods` will
+**not** run any methods for you.
+
+## Executing Runtime Methods
+
+Primitives provides a utility `MethodRunner` class that can be used to execute the results of the `parseMethods` on any
+target class:
+
+```php
+<?php
+
+use Stillat\Primitives\Parser;
+use Stillat\Primitives\MethodRunner;
+
+$parser = new Parser();
+$runner = new MethodRunner();
+
+class MyClass {
+
+    public function sayHello($name)
+    {
+        return 'Hello, '.$name;
+    }
+
+}
+
+$myClassInstance = new MyClass();
+
+$methods = $parser->parseMethods("sayHello('Dave')");
+$result = $runner->run($methods, $myClassInstance);
+
+```
+
+After the above code has executed, `$result` would contain the value `Hello, Dave`.
+
+Important notes when using `MethodRunner`:
+
+* There must only be one root method call
+* If there is more than one root element, the `run` method returns `null`
+* `MethodRunner` does not check for method existence, allowing `__call` to be invoked
+
 ## License
 
 MIT License. See LICENSE.MD

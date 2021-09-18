@@ -2,8 +2,10 @@
 
 namespace Stillat\Primitives;
 
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\UnaryMinus;
 use PhpParser\Node\Scalar\DNumber;
 use PhpParser\Node\Scalar\LNumber;
@@ -25,9 +27,27 @@ class Evaluator
             return $node->value;
         } elseif ($node instanceof UnaryMinus) {
             return -1 * $this->evaluate($node->expr);
+        } elseif ($node instanceof FuncCall) {
+            return $this->evaluateFunctionCall($node);
         }
 
         return null;
+    }
+
+    protected function evaluateFunctionCall(FuncCall $funcCall)
+    {
+        $runtimeMethod = new MethodCall();
+        $runtimeMethod->name = $funcCall->name->parts[0];
+
+        foreach ($funcCall->args as $arg) {
+            if ($arg instanceof Arg) {
+                $runtimeMethod->args[] = $this->evaluate($arg->value);
+            } else {
+                $runtimeMethod->args[] = $this->evaluate($arg);
+            }
+        }
+
+        return $runtimeMethod;
     }
 
     private function getConstantValue($value)

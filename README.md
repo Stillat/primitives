@@ -152,6 +152,70 @@ Important notes when using `MethodRunner`:
 * If there is more than one root element, the `run` method returns `null`
 * `MethodRunner` does not check for method existence, allowing `__call` to be invoked
 
+## Calling Native PHP Functions
+
+The internal method runner does not support calling native PHP functions. However, we can create a class instance
+that can (and utilize whatever logic is appropriate for the current project to determine what is a "safe" function to call):
+
+```php
+<?php
+
+use Stillat\Primitives\Parser;
+use Stillat\Primitives\MethodRunner;
+
+$parser = new Parser();
+$runner = new MethodRunner();
+
+class Greeter {
+
+    public function sayHello($name)
+    {
+        return 'Hello, '.$name;
+    }
+
+}
+
+class MethodTarget
+{
+
+    protected $instance;
+    protected $safePhpFunctions = [
+        'strtoupper'
+    ];
+
+    public function __construct()
+    {
+        $this->instance = new Greeter();
+    }
+
+    public function __call($name, $arguments)
+    {
+        // Replace with whatever logic makes sense. This approach
+        // utilizes an allowed list of functions, but using
+        // something like function_exists also works.
+        if (in_array($name, $this->safePhpFunctions)) {
+            return call_user_func($name, ...$arguments);
+        }
+
+        return call_user_func([$this->instance, $name], ...$arguments);
+    }
+
+}
+
+$instance = new MethodTarget();
+
+$result = $parser->parseMethods('sayHello(strtoupper("this is lowercase"))');
+
+$methodResult = $runner->run($result, $instance);
+
+```
+
+After the above code has executed, `$methodResult` would contain the value `Hello, THIS IS LOWERCASE`. This approach works
+because we are making use of PHP's `__call` magic method to perform method overloading. When we attempt to call a method
+on our class instance that does not exist, the `__call` method will receive the method name and arguments. If the list
+of safe functions contains the incoming method name, we will invoke it and return the results with the original arguments.
+If our safe list does not contain the function, we default to attempting to call it on our target class instance.
+
 ## Context Variables
 
 You may also supply an array of contextual data that can be used when evaluating the input string. Context variables

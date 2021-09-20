@@ -40,7 +40,6 @@ class Evaluator
             return Arr::get($context, $path, null);
         }
 
-
         return null;
     }
 

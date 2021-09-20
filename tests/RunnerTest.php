@@ -37,7 +37,6 @@ class RunnerTest extends TestCase
 
         $this->assertSame('Said: I am the last name.', $runResults);
     }
-
 }
 
 class TestTarget

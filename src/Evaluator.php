@@ -40,6 +40,7 @@ class Evaluator
             return Arr::get($context, $path, null);
         }
 
+
         return null;
     }
 
@@ -92,7 +93,12 @@ class Evaluator
             return constant($value);
         }
 
-        return null;
+        // Convert unknown constants into method calls.
+        $runtimeMethod = new MethodCall();
+        $runtimeMethod->name = $value;
+        $runtimeMethod->args = [];
+
+        return $runtimeMethod;
     }
 
     protected function evaluateArray(Array_ $array, $context)

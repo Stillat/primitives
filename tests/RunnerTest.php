@@ -18,7 +18,7 @@ class RunnerTest extends TestCase
 
     public function test_it_calls_methods_on_class_instances()
     {
-        $parseResults = $result = $this->parser
+        $parseResults = $this->parser
             ->parseMethods("randomElements(['a', 'b', 'c', 'd', 'e'], rand(1, 5))");
 
         $myClassInstance = new TestTarget();
@@ -27,6 +27,17 @@ class RunnerTest extends TestCase
 
         $this->assertSame('Input: abcde : rand: min 1 max: 5', $runResults);
     }
+
+    public function test_unmatched_constants_are_converted_to_method_calls()
+    {
+        $parseResults = $this->parser->parseMethods('say(lastName)');
+
+        $myClassInstance = new TestTarget();
+        $runResults = $this->methodRunner->run($parseResults, $myClassInstance);
+
+        $this->assertSame('Said: I am the last name.', $runResults);
+    }
+
 }
 
 class TestTarget
@@ -41,5 +52,15 @@ class TestTarget
         $input = implode('', $array);
 
         return 'Input: '.$input.' : '.$limit;
+    }
+
+    public function lastName()
+    {
+        return 'I am the last name.';
+    }
+
+    public function say($text)
+    {
+        return 'Said: '.$text;
     }
 }

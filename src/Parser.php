@@ -68,7 +68,7 @@ class Parser
     /**
      * Converts a PHP string into an array of raw PHP expressions.
      *
-     * @param string $string The raw string.
+     * @param  string  $string  The raw string.
      * @return array
      */
     public function safeSplitString($string)

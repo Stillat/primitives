@@ -5,6 +5,7 @@ namespace Stillat\Primitives;
 use Illuminate\Support\Str;
 use PhpParser\Lexer\Emulative;
 use PhpParser\Parser\Php7;
+use PhpParser\PrettyPrinter\Standard;
 
 class Parser
 {
@@ -62,6 +63,26 @@ class Parser
         }
 
         return $values;
+    }
+
+    /**
+     * Converts a PHP string into an array of raw PHP expressions.
+     *
+     * @param string $string The raw string.
+     * @return array
+     */
+    public function safeSplitString($string)
+    {
+        $statements = $this->getStatements($string);
+
+        $splitValues = [];
+        $printer = new Standard();
+
+        foreach ($statements as $statement) {
+            $splitValues[] = $printer->prettyPrint([$statement]);
+        }
+
+        return $splitValues;
     }
 
     /**

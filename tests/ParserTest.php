@@ -150,4 +150,21 @@ class ParserTest extends TestCase
 
         $this->assertSame(['Dave', 'Anywhere'], $this->parser->parseString($input, $context)[0]);
     }
+
+    public function test_safe_string_split()
+    {
+        $input = <<<'EOT'
+'something', $test->thing, $test ? $this : $that, $test, -$test, env(1,2,3, $test, [1,2,3])
+EOT;
+
+        $result = $this->parser->safeSplitString($input);
+
+        $this->assertCount(6, $result);
+        $this->assertSame("'something'", $result[0]);
+        $this->assertSame('$test->thing', $result[1]);
+        $this->assertSame('$test ? $this : $that', $result[2]);
+        $this->assertSame('$test', $result[3]);
+        $this->assertSame('-$test', $result[4]);
+        $this->assertSame('env(1, 2, 3, $test, [1, 2, 3])', $result[5]);
+    }
 }

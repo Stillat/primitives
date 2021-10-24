@@ -167,4 +167,18 @@ EOT;
         $this->assertSame('-$test', $result[4]);
         $this->assertSame('env(1, 2, 3, $test, [1, 2, 3])', $result[5]);
     }
+
+    public function test_safe_split_named_string()
+    {
+        $input = <<<'EOT'
+'something', another: [1, 2, 3], param: env('test', 'hello')
+EOT;
+
+        $result = $this->parser->safeSplitNamedString($input);
+
+        $this->assertCount(3, $result);
+        $this->assertSame(["'something'", null], $result[0]);
+        $this->assertSame(["[1, 2, 3]", "another"], $result[1]);
+        $this->assertSame(["env('test', 'hello')", "param"], $result[2]);
+    }
 }

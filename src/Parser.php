@@ -4,6 +4,7 @@ namespace Stillat\Primitives;
 
 use Illuminate\Support\Str;
 use PhpParser\Lexer\Emulative;
+use PhpParser\Node\Arg;
 use PhpParser\Parser\Php7;
 use PhpParser\PrettyPrinter\Standard;
 
@@ -80,6 +81,33 @@ class Parser
 
         foreach ($statements as $statement) {
             $splitValues[] = $printer->prettyPrint([$statement]);
+        }
+
+        return $splitValues;
+    }
+
+    public function safeSplitNamedString($string)
+    {
+        $string = '_fakeCall('.$string.')';
+        $statements = $this->getStatements($string);
+        /** @var Arg[] $args */
+        $args = $statements[0]->value->args;
+
+        $splitValues = [];
+        $printer = new Standard();
+
+        foreach ($args as $arg) {
+            $value = $printer->prettyPrint([$arg->value]);
+            $name = null;
+
+            if ($arg->name != null) {
+                $name = $arg->name->name;
+            }
+
+            $splitValues[] = [
+                $value,
+                $name
+            ];
         }
 
         return $splitValues;

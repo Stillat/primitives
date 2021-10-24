@@ -106,7 +106,7 @@ class Parser
 
             $splitValues[] = [
                 $value,
-                $name
+                $name,
             ];
         }
 

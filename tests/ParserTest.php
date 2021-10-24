@@ -178,7 +178,7 @@ EOT;
 
         $this->assertCount(3, $result);
         $this->assertSame(["'something'", null], $result[0]);
-        $this->assertSame(["[1, 2, 3]", "another"], $result[1]);
-        $this->assertSame(["env('test', 'hello')", "param"], $result[2]);
+        $this->assertSame(['[1, 2, 3]', 'another'], $result[1]);
+        $this->assertSame(["env('test', 'hello')", 'param'], $result[2]);
     }
 }

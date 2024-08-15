@@ -3,9 +3,9 @@
 namespace Stillat\Primitives;
 
 use Illuminate\Support\Str;
-use PhpParser\Lexer\Emulative;
 use PhpParser\Node\Arg;
 use PhpParser\Parser\Php7;
+use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
 
 class Parser
@@ -15,21 +15,9 @@ class Parser
      */
     protected $parser;
 
-    /**
-     * @var Emulative
-     */
-    protected $lexer = null;
-
     public function __construct()
     {
-        $this->lexer = new Emulative([
-            'usedAttributes' => [
-                'comments',
-                'startLine', 'endLine',
-                'startTokenPos', 'endTokenPos',
-            ],
-        ]);
-        $this->parser = new Php7($this->lexer);
+        $this->parser = (new ParserFactory())->createForNewestSupportedVersion();
     }
 
     /**

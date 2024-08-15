@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "nikic/php-parser": "^4.10.3",
+    "nikic/php-parser": "^5",
     "illuminate/support": "*"
   },
   "require-dev": {

@@ -23,7 +23,7 @@ class Evaluator
         } elseif ($node instanceof DNumber) {
             return floatval($node->value);
         } elseif ($node instanceof ConstFetch) {
-            return $this->getConstantValue($node->name->parts[0]);
+            return $this->getConstantValue($node->name->getParts()[0]);
         } elseif ($node instanceof Array_) {
             return $this->evaluateArray($node, $context);
         } elseif ($node instanceof String_) {
@@ -62,7 +62,7 @@ class Evaluator
     protected function evaluateFunctionCall(FuncCall $funcCall, $context)
     {
         $runtimeMethod = new MethodCall();
-        $runtimeMethod->name = $funcCall->name->parts[0];
+        $runtimeMethod->name = $funcCall->name->getParts()[0];
 
         foreach ($funcCall->args as $arg) {
             if ($arg instanceof Arg) {
